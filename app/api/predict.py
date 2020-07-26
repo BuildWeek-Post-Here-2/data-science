@@ -9,22 +9,24 @@ log = logging.getLogger(__name__)
 router = APIRouter()
 
 
+
+''' PLACEHOLDER VALUES FOR INPUT AND OUTPUT WHILE APPLICATION IS BEING WORKED ON '''
+
+
+
+ph_df = pd.read_csv("https://drive.google.com/uc?export=download&id=1b2MGLb-UQ18A2YsWWiDtVrHHzLhZ8NBz", sep='\t')
+sub_names = ph_df['subreddit_title'].tolist()
+
 class Item(BaseModel):
     """Use this data model to parse the request body JSON."""
 
-    x1: float = Field(..., example=3.14)
-    x2: int = Field(..., example=-42)
-    x3: str = Field(..., example='banjo')
+    x1: str = Field(..., example='This is an example title')
+    x2: str = Field(..., example='this is an example selftext or link')
+    
 
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
-
-    @validator('x1')
-    def x1_must_be_positive(cls, value):
-        """Validate that x1 is a positive number."""
-        assert value > 0, f'x1 == {value}, must be > 0'
-        return value
 
 
 @router.post('/predict')
@@ -32,9 +34,10 @@ async def predict(item: Item):
     """Make random baseline predictions for classification problem."""
     X_new = item.to_df()
     log.info(X_new)
-    y_pred = random.choice([True, False])
-    y_pred_proba = random.random() / 2 + 0.5
+    y_pred = random.choice(sub_names)
+    df1 = ph_df[ph_df['subreddit_title'] == y_pred]
+    sub_des = df1['subreddit_description'].iloc[0]
     return {
         'prediction': y_pred,
-        'probability': y_pred_proba
+        'probability': sub_des
     }
