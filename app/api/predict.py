@@ -39,5 +39,5 @@ async def predict(item: Item):
     sub_des = df1['subreddit_description'].iloc[0]
     return {
         'prediction': y_pred,
-        'probability': sub_des
+        'description': sub_des
     }
