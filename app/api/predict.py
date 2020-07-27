@@ -14,7 +14,7 @@ router = APIRouter()
 
 
 
-ph_df = pd.read_csv("https://drive.google.com/uc?export=download&id=1b2MGLb-UQ18A2YsWWiDtVrHHzLhZ8NBz", sep='\t')
+ph_df = pd.read_csv("https://drive.google.com/uc?export=download&id=1QUQwDWzbuGizJ9rVxzB-H7uio3eE6uRa", sep='\t')
 sub_names = ph_df['subreddit_title'].tolist()
 
 class Item(BaseModel):
