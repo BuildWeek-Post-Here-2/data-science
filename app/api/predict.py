@@ -39,7 +39,7 @@ class Item(BaseModel):
 def rfmodel_pred(df, fname):
     model = load(fname)
     n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
-    s = model.predict(n)
+    s = model.predict([n])
     return s
 
 @router.post('/predict')
