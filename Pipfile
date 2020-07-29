@@ -16,6 +16,10 @@ fastapi = "*"
 pandas = "*"
 uvicorn = "*"
 plotly = "*"
+tensorflow = "*"
+keras = "*"
+joblib = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.7"
