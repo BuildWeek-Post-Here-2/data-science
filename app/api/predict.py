@@ -1,6 +1,8 @@
 import logging
 import random
 
+
+from joblib import dump, load
 from fastapi import APIRouter
 import pandas as pd
 from pydantic import BaseModel, Field, validator
@@ -28,14 +30,27 @@ class Item(BaseModel):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
+'''def model_pred(df, fname):
+    model = keras.models.load_model(fname)
+    n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
+    s = model.predict([df['x1'].iloc[0]])
+    return s'''
+    
+def rfmodel_pred(df, fname):
+    model = load(fname)
+    n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
+    s = model.predict(n)
+    return s
 
 @router.post('/predict')
 async def predict(item: Item):
     """Make random baseline predictions for classification problem."""
     X_new = item.to_df()
     log.info(X_new)
-    y_pred = random.choice(sub_names)
+    n1 = rfmodel_pred(X_new, 'randomforest.joblib')
+    y_pred = sub_names[int(n1[0]*100)-100]
     df1 = ph_df[ph_df['subreddit_title'] == y_pred]
+    df1 = df1.fillna('')
     sub_des = df1['subreddit_description'].iloc[0]
     return {
         'prediction': y_pred,
