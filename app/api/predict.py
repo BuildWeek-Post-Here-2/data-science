@@ -47,8 +47,8 @@ async def predict(item: Item):
     """Make random baseline predictions for classification problem."""
     X_new = item.to_df()
     log.info(X_new)
-    n1 = rfmodel_pred(X_new, 'randomforest.joblib')
-    y_pred = sub_names[int(n1[0]*100)-100]
+    n1 = rfmodel_pred(X_new, 'adaboost.joblib')
+    y_pred = sub_names[int(n1[0]*1000)-1000]
     df1 = ph_df[ph_df['subreddit_title'] == y_pred]
     df1 = df1.fillna('')
     sub_des = df1['subreddit_description'].iloc[0]
