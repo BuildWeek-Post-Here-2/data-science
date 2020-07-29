@@ -1,7 +1,6 @@
 import logging
 import random
 
-import tensorflow as tf
 from tensorflow import keras
 from joblib import dump, load
 from fastapi import APIRouter
