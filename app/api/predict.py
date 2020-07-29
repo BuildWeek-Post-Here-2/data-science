@@ -1,7 +1,7 @@
 import logging
 import random
 
-from tensorflow import keras
+
 from joblib import dump, load
 from fastapi import APIRouter
 import pandas as pd
@@ -30,16 +30,16 @@ class Item(BaseModel):
         """Convert pydantic object to pandas dataframe with 1 row."""
         return pd.DataFrame([dict(self)])
 
-def model_pred(df, fname):
+'''def model_pred(df, fname):
     model = keras.models.load_model(fname)
     n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
     s = model.predict([df['x1'].iloc[0]])
-    return s
+    return s'''
     
 def rfmodel_pred(df, fname):
     model = load(fname)
     n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
-    s = model.predict([df['x1'].iloc[0]])
+    s = model.predict([n])
     return s
 
 @router.post('/predict')
