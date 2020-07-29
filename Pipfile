@@ -16,15 +16,6 @@ fastapi = "*"
 pandas = "*"
 uvicorn = "*"
 plotly = "*"
-<<<<<<< HEAD
-keras = "*"
-joblib = "*"
-sklearn = "*"
-=======
-joblib = "*"
-sklearn = "*"
-pydantic = "*"
->>>>>>> de036b71d625787092391b5c2770ba6491e3f0b5
 
 [requires]
 python_version = "3.7"
