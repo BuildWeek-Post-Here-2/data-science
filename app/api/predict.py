@@ -1,7 +1,8 @@
 import logging
 import random
 
-
+from os import getenv
+import basilica
 from joblib import dump, load
 from fastapi import APIRouter
 import pandas as pd
@@ -9,10 +10,6 @@ from pydantic import BaseModel, Field, validator
 
 log = logging.getLogger(__name__)
 router = APIRouter()
-
-
-
-''' PLACEHOLDER VALUES FOR INPUT AND OUTPUT WHILE APPLICATION IS BEING WORKED ON '''
 
 
 
@@ -37,9 +34,11 @@ class Item(BaseModel):
     return s'''
     
 def rfmodel_pred(df, fname):
+    connection = basilica.Connection(getenv('BASILICA_KEY'))
     model = load(fname)
     n = df['x1'].iloc[0] + ' ' + df['x2'].iloc[0]
-    s = model.predict([n])
+    embedding = connection.embed_sentence(n, model="reddit")
+    s = model.predict([embedding])
     return s
 
 @router.post('/predict')
@@ -47,7 +46,7 @@ async def predict(item: Item):
     """Make random baseline predictions for classification problem."""
     X_new = item.to_df()
     log.info(X_new)
-    n1 = rfmodel_pred(X_new, 'adaboost.joblib')
+    n1 = rfmodel_pred(X_new, 'embeddingsRFCV5c.joblib')
     y_pred = sub_names[int(n1[0]*1000)-1000]
     df1 = ph_df[ph_df['subreddit_title'] == y_pred]
     df1 = df1.fillna('')
